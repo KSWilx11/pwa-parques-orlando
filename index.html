@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParqueFilas Orlando</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#673ab7"> <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ParqueFilas">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png"> <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div id="page-notification-banner">
+        <span id="page-notification-message"></span>
+        <button id="close-page-notification">Fechar</button>
+    </div>
+
+    <header>
+        <h1>ParqueFilas Orlando</h1>
+    </header>
+    <main>
+        <section id="notification-permission-section" style="text-align: center; margin-bottom: 20px; display: none;">
+            <button id="enable-notifications-btn" class="button-style">🔔 Ativar Notificações de Alarme</button>
+        </section>
+
+        <section id="park-list-section">
+            <h2>Escolha um Parque:</h2>
+            <div id="park-list-container">
+                </div>
+        </section>
+
+        <section id="ride-list-section" style="display:none;">
+            <div class="ride-list-header">
+                <h2 id="selected-park-name"></h2>
+                <div id="next-update-timer-container">
+                    Próxima atualização em: <span id="next-update-countdown">--</span>s
+                </div>
+            </div>
+            <button id="back-to-parks">⬅️ Voltar para Parques</button>
+            
+            <div id="search-controls">
+                <input type="text" id="search-ride-input" placeholder="Buscar atração pelo nome...">
+            </div>
+
+            <div id="filter-controls">
+                <button id="show-all-btn">Todas</button>
+                <button id="show-favorites-btn">Favoritas ❤️</button>
+                <div class="status-filter-control">
+                    <input type="checkbox" id="show-only-open-checkbox">
+                    <label for="show-only-open-checkbox">Somente Abertos ✅</label>
+                </div>
+            </div>
+            <div id="ride-list-container">
+                </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 ParqueFilas Orlando - Dados fornecidos por queue-times.com</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
