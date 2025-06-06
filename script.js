@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Registo do Service Worker (Adicionado para PWA)
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js') // Certifique-se que o caminho está correto
+            navigator.serviceWorker.register('/service-worker.js') 
                 .then(registration => {
                     console.log('[Main Script] Service Worker registado com sucesso:', registration);
                 })
@@ -176,15 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // MODIFICADO PARA USAR O PROXY NETLIFY
     async function fetchRidesForPark(parkId) {
-        // O URL da sua função Netlify. 
-        // O Netlify automaticamente torna as funções em 'netlify/functions/' acessíveis em '/.netlify/functions/NOME_DO_FICHEIRO_DA_FUNCAO'
         const proxyUrl = `/.netlify/functions/getQueueTimes?parkId=${parkId}`; 
 
         console.log(`Buscando dados via proxy Netlify: ${proxyUrl}`);
         try {
-            const response = await fetch(proxyUrl); // Chama a sua função Netlify
+            const response = await fetch(proxyUrl); 
             if (!response.ok) {
                 let errorData;
                 try {
@@ -272,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rideUpdateInterval) clearInterval(rideUpdateInterval);
         if (countdownInterval) clearInterval(countdownInterval);
 
-        const data = await fetchRidesForPark(park.id); // Agora chama o proxy
+        const data = await fetchRidesForPark(park.id); 
         if (data) {
             if (data.lands) {
                 data.lands.forEach(land => {
@@ -290,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             rideUpdateInterval = setInterval(async () => {
                 if (currentParkId === park.id) {
                     console.log(`[Intervalo] Atualizando dados para ${park.name}...`);
-                    const updatedData = await fetchRidesForPark(park.id); // Agora chama o proxy
+                    const updatedData = await fetchRidesForPark(park.id); 
                     if (updatedData) {
                         console.log("[Intervalo] Dados atualizados recebidos:", updatedData);
                         processNotificationsForStatusChange(updatedData, park.id, park.name); 
@@ -365,6 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const rideElement = document.createElement('div');
             rideElement.classList.add('ride-item');
             rideElement.id = `ride-${ride.id}`;
+            // CORREÇÃO: Adicionando os emojis de volta ao texto do botão de alarme
             rideElement.innerHTML = `
                 <h3>${ride.name}</h3>
                 <p><strong>Fila:</strong> ${ride.wait_time !== undefined ? ride.wait_time + ' minutos' : 'N/D'}</p>
@@ -383,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label for="alarm-time-${ride.id}">Alarme em (min):</label>
                     <input type="number" id="alarm-time-${ride.id}" min="0" value="${currentAlarm ? currentAlarm.desiredTime : ''}" ${currentAlarm ? 'disabled' : ''}>
                     <button class="alarm-btn" data-ride-id="${ride.id}" data-ride-name="${ride.name}" data-park-id="${currentParkId}">
-                        ${currentAlarm ? 'Remover Alarme ❌' : 'Definir Alarme �'}
+                        ${currentAlarm ? 'Remover Alarme ❌' : 'Definir Alarme 🔔'}
                     </button>
                     ${currentAlarm ? `<span class="alarm-status">Alarme para ${currentAlarm.desiredTime} min</span>` : ''}
                 </div>
