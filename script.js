@@ -113,14 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     function triggerNotification(title, message, icon = './assets/bell-icon.png') { 
         if (Notification.permission === 'granted') {
-            // Tenta usar o Service Worker para mostrar a notificação, se disponível e registado
             if (navigator.serviceWorker.controller) {
                  navigator.serviceWorker.controller.postMessage({
                      type: 'SHOW_NOTIFICATION',
-                     payload: { title, options: { body: message, icon: icon, tag: title + message.substring(0,10) } } // Adiciona tag para evitar duplicados rápidos
+                     payload: { title, options: { body: message, icon: icon, tag: title + message.substring(0,10) } } 
                  });
             } else {
-                // Fallback para notificação direta se o SW não estiver a controlar
                 new Notification(title, { body: message, icon: icon, tag: title + message.substring(0,10) });
             }
         } else {
@@ -178,16 +176,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // MODIFICADO PARA USAR O PROXY NETLIFY
     async function fetchRidesForPark(parkId) {
-        const apiUrl = `https://queue-times.com/parks/${parkId}/queue_times.json`;
-        console.log(`Buscando dados de: ${apiUrl}`);
+        // O URL da sua função Netlify. 
+        // O Netlify automaticamente torna as funções em 'netlify/functions/' acessíveis em '/.netlify/functions/NOME_DO_FICHEIRO_DA_FUNCAO'
+        const proxyUrl = `/.netlify/functions/getQueueTimes?parkId=${parkId}`; 
+
+        console.log(`Buscando dados via proxy Netlify: ${proxyUrl}`);
         try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            const response = await fetch(proxyUrl); // Chama a sua função Netlify
+            if (!response.ok) {
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    errorData = { error: response.statusText || "Falha ao ler resposta do erro do proxy." };
+                }
+                console.error("Erro da função Netlify:", response.status, errorData);
+                throw new Error(`Erro no proxy: ${response.status} - ${errorData.error || 'Erro desconhecido do proxy'}`);
+            }
             return await response.json();
         } catch (error) {
-            console.error("Erro ao buscar dados das filas:", error);
-            showPageNotification(`Erro ao buscar filas para ${parks.find(p=>p.id === parkId)?.name || 'parque'}.`, 'error');
+            console.error("Erro ao buscar dados das filas via proxy Netlify:", error);
+            showPageNotification(`Erro ao buscar filas: ${error.message}. Verifique o console.`, 'error');
             return null;
         }
     }
@@ -261,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rideUpdateInterval) clearInterval(rideUpdateInterval);
         if (countdownInterval) clearInterval(countdownInterval);
 
-        const data = await fetchRidesForPark(park.id);
+        const data = await fetchRidesForPark(park.id); // Agora chama o proxy
         if (data) {
             if (data.lands) {
                 data.lands.forEach(land => {
@@ -279,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
             rideUpdateInterval = setInterval(async () => {
                 if (currentParkId === park.id) {
                     console.log(`[Intervalo] Atualizando dados para ${park.name}...`);
-                    const updatedData = await fetchRidesForPark(park.id);
+                    const updatedData = await fetchRidesForPark(park.id); // Agora chama o proxy
                     if (updatedData) {
                         console.log("[Intervalo] Dados atualizados recebidos:", updatedData);
                         processNotificationsForStatusChange(updatedData, park.id, park.name); 
@@ -372,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label for="alarm-time-${ride.id}">Alarme em (min):</label>
                     <input type="number" id="alarm-time-${ride.id}" min="0" value="${currentAlarm ? currentAlarm.desiredTime : ''}" ${currentAlarm ? 'disabled' : ''}>
                     <button class="alarm-btn" data-ride-id="${ride.id}" data-ride-name="${ride.name}" data-park-id="${currentParkId}">
-                        ${currentAlarm ? 'Remover Alarme ❌' : 'Definir Alarme 🔔'}
+                        ${currentAlarm ? 'Remover Alarme ❌' : 'Definir Alarme �'}
                     </button>
                     ${currentAlarm ? `<span class="alarm-status">Alarme para ${currentAlarm.desiredTime} min</span>` : ''}
                 </div>
