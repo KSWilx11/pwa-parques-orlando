@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParqueFilas Orlando</title>
+    <title>QueueGo Orlando</title> <!-- Título da aba também pode ser atualizado -->
     
+    <!-- PWA Manifest e Theme Color -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#673ab7"> <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ParqueFilas">
-    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png"> <link rel="stylesheet" href="estilos.css">
+    <meta name="theme-color" content="#673ab7"> 
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="QueueGo"> <!-- Pode querer atualizar este também -->
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png"> 
+
+
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <div id="page-notification-banner">
@@ -18,7 +25,7 @@
     </div>
 
     <header>
-        <h1>ParqueFilas Orlando</h1>
+        <h1>QueueGo Orlando</h1> <!-- TEXTO ALTERADO AQUI -->
     </header>
     <main>
         <section id="notification-permission-section" style="text-align: center; margin-bottom: 20px; display: none;">
@@ -28,7 +35,8 @@
         <section id="park-list-section">
             <h2>Escolha um Parque:</h2>
             <div id="park-list-container">
-                </div>
+                <!-- Parques serão inseridos aqui pelo JavaScript -->
+            </div>
         </section>
 
         <section id="ride-list-section" style="display:none;">
@@ -53,11 +61,12 @@
                 </div>
             </div>
             <div id="ride-list-container">
-                </div>
+                <!-- Atrações serão inseridas aqui -->
+            </div>
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 ParqueFilas Orlando - Dados fornecidos por queue-times.com</p>
+        <p>&copy; 2025 QueueGo Orlando - Dados fornecidos por queue-times.com</p> <!-- Atualizado aqui também para consistência -->
     </footer>
     <script src="script.js"></script>
 </body>

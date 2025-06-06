@@ -1,6 +1,6 @@
 {
-    "name": "Parque Filas Orlando",
-    "short_name": "xô Fila",
+    "name": "QueueGo Orlando",
+    "short_name": "QueueGo",
     "description": "Consulte os tempos de fila dos parques de Orlando em tempo real.",
     "start_url": "/index.html",
     "display": "standalone",
